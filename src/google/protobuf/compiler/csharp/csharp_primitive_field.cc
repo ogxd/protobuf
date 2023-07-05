@@ -144,23 +144,25 @@ void PrimitiveFieldGenerator::GenerateMembers(io::Printer* printer) {
     "  }\n"
     "}\n");
 
-  // The "HasFoo" property, where required.
-  if (SupportsPresenceApi(descriptor_)) {
-    printer->Print(variables_,
-      "/// <summary>Gets whether the \"$descriptor_name$\" field is set</summary>\n");
-    AddPublicMemberAttributes(printer);
-    printer->Print(
-      variables_,
-      "$access_level$ bool Has$property_name$ {\n"
-      "  get { return ");
-    if (IsNullable(descriptor_)) {
+  // If enabled, the "HasFoo" property, where required.
+  if (!this->options()->no_has_properties) {
+    if (SupportsPresenceApi(descriptor_)) {
+      printer->Print(variables_,
+        "/// <summary>Gets whether the \"$descriptor_name$\" field is set</summary>\n");
+      AddPublicMemberAttributes(printer);
       printer->Print(
         variables_,
-        "$name$_ != null; }\n}\n");
-    } else {
-      printer->Print(
-        variables_,
-        "$has_field_check$; }\n}\n");
+        "$access_level$ bool Has$property_name$ {\n"
+        "  get { return ");
+      if (IsNullable(descriptor_)) {
+        printer->Print(
+          variables_,
+          "$name$_ != null; }\n}\n");
+      } else {
+        printer->Print(
+          variables_,
+          "$has_field_check$; }\n}\n");
+      }
     }
   }
 

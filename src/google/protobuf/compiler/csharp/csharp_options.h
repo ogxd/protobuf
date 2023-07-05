@@ -45,7 +45,8 @@ struct Options {
       base_namespace(""),
       base_namespace_specified(false),
       internal_access(false),
-      serializable(false) {
+      serializable(false),
+      no_has_properties(false) {
   }
   // Extension of the generated file. Defaults to ".cs"
   std::string file_extension;
@@ -71,6 +72,9 @@ struct Options {
   // Whether the generated classes should have a global::System.Serializable attribute added
   // Defaults to false
   bool serializable;
+  // Whether we generate an Has(MyField) property for every field in the message.
+  // Defaults to true
+  bool no_has_properties;
 };
 
 }  // namespace csharp
